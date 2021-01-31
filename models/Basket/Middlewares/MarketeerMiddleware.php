@@ -3,7 +3,7 @@
 namespace Models\Basket\Middlewares;
 
 use App\Models\User;
-use App\Roles\CustomerRole;
+use App\Roles\MarketeerRole;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Http\Request;
 use Models\Basket\CustomerBasket;
@@ -15,21 +15,13 @@ use Models\Basket\Scopes\SkipCustomerRemovedItemScope;
  *
  * @author Mohammed Mudassir <hello@mudasir.me>
  */
-class CustomerMiddleware
+class MarketeerMiddleware
 {
     public function handle(Request $request, callable $next)
     {
-        if (! $request->user()->tokenCan(CustomerRole::key())) {
+        if (! $request->user()->tokenCan(MarketeerRole::key())) {
             abort(401);
         }
-
-        // Preventing removed items from the CustomerBasket object.
-        BasketItem::addGlobalScope(new SkipCustomerRemovedItemScope);
-
-        // Making sure we always get the same customer's basket
-        app()->singleton(CustomerBasket::class, function () use ($request) {
-            return new CustomerBasket($request->user());
-        });
 
         return $next($request);
     }

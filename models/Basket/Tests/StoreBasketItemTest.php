@@ -18,7 +18,7 @@ class StoreBasketItemTest extends TestCase
         $this->actAsCustomer();
     }
 
-    public function test_basket_response_after_adding_item()
+    public function test_basket_success_response_after_adding_item()
     {
         $product = Product::factory()->create();
 
@@ -27,7 +27,7 @@ class StoreBasketItemTest extends TestCase
         $response->assertStatus(200);
     }
 
-    public function test_basket_response_when_bogus_item_given()
+    public function test_basket_failure_response_when_bogus_item_is_given()
     {
         $response = $this->post("/api/customer/basket/product-id-does-not-exists/store");
 
@@ -35,13 +35,13 @@ class StoreBasketItemTest extends TestCase
     }
 
 
-    public function test_basket_response_when_same_product_is_added()
+    public function test_incrementing_item_quantity_when_same_product_is_added()
     {
         $customerBucket = new CustomerBasket($this->user);
         $customerBucket->addItem($product = Product::factory()->create());
         $response = $this->post("/api/customer/basket/{$product->id}/store");
 
-        $response->dump()->assertStatus(200);
+        $response->assertStatus(200);
         $this->assertEquals(2, $response->json('data.items.0.quantity'));
     }
 }

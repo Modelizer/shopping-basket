@@ -40,12 +40,14 @@ class CustomerBasket
                 'product_id' => $product->id,
             ]);
 
-        if ($basketItem->id) {
-            $basketItem->quantity = $basketItem->quantity + 1;
-        }
+        tap($basketItem, function ($basketItem) {
+            if ($basketItem->id) {
+                $basketItem->quantity++;
+            }
 
-        $this->basket->items()->save($basketItem);
-        $this->basket->refresh();
+            $this->basket->items()->save($basketItem);
+            $this->basket->refresh();
+        });
 
         return $this;
     }

@@ -30,4 +30,11 @@ class RemoveBasketItemTest extends TestCase
         $response->assertStatus(200);
         $response->assertJsonCount(1, 'data.items');
     }
+
+    public function test_fails_when_item_is_not_present_inside_the_basket()
+    {
+        $response = $this->post("/api/customer/basket/bogus-product-id/remove");
+
+        $response->assertStatus(404);
+    }
 }

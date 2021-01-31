@@ -3,6 +3,8 @@
 namespace Tests;
 
 use App\Models\User;
+use App\Roles\CustomerRole;
+use App\Roles\MarketeerRole;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 use Laravel\Sanctum\Sanctum;
 use Models\Basket\CustomerBasket;
@@ -17,7 +19,7 @@ abstract class TestCase extends BaseTestCase
     {
         Sanctum::actingAs(
             $this->user = User::factory()->create(),
-            ['customer']
+            CustomerRole::permissions(),
         );
     }
 
@@ -25,7 +27,7 @@ abstract class TestCase extends BaseTestCase
     {
         Sanctum::actingAs(
             $this->user = User::factory()->create(),
-            ['marketeer']
+            MarketeerRole::permissions(),
         );
     }
 

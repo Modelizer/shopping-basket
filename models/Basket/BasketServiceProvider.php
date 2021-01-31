@@ -7,6 +7,7 @@ use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Models\Basket\Middlewares\CustomerMiddleware;
+use Models\Basket\Middlewares\MarketeerMiddleware;
 
 /**
  * @author Mohammed Mudassir <hello@mudasir.me>
@@ -19,12 +20,13 @@ class BasketServiceProvider extends RouteServiceProvider
             Route::prefix('api/customer/basket')
                 ->middleware(['api', 'auth:sanctum', CustomerMiddleware::class])
                 ->namespace('Models\\Controller')
+                ->name('customer.bucket.')
                 ->group(base_path('models/Basket/Routes/customer.php'));
 
             Route::prefix('api/marketeer/basket')
-                ->middleware(['api', 'auth:sanctum'])
+                ->middleware(['api', 'auth:sanctum', MarketeerMiddleware::class])
                 ->namespace('Models\\Controller')
-                ->name('customer.bucket.')
+                ->name('marketeer.bucket.')
                 ->group(base_path('models/Basket/Routes/marketeer.php'));
         });
 

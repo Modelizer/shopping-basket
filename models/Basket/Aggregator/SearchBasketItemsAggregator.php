@@ -2,31 +2,38 @@
 
 namespace Models\Basket\Aggregator;
 
+use App\Models\User;
+use Illuminate\Database\Eloquent\Collection;
+use Laravel\Jetstream\Jetstream;
 use Models\Basket\ValueObjects\BasketItemFilterObject;
-use Models\Basket\Entities\Basket;
 
 /**
  * @author Mohammed Mudassir <hello@mudasir.me>
  */
 class SearchBasketItemsAggregator
 {
-    protected array $itemFilters = [];
+    protected array $basketItemFilters = [];
 
-    public function __construct(private Basket $basket)
+    public function __construct(private User $user)
     {
         //
     }
 
-    public function get(BasketItemFilterObject $basketItemFilterObject)
+    public function get(BasketItemFilterObject $basketItemFilterObject): Collection
     {
-        if ($basketItemFilterObject->itemStatus) {
-            $this->itemFilters[] = ['status', $basketItemFilterObject->itemStatus];
+        if ($basketItemFilterObject->getItemStatus()) {
+            $this->basketItemFilters[] = ['status', $basketItemFilterObject->getItemStatus()];
         }
 
-        $this->basket->with(['items' => function ($item) {
-            $item->where($this->itemFilters);
-        }]);
-
-        return $this->basket->get();
+        return $this->user
+            ->with([
+                'baskets.items' => function ($item) {
+                    $item->where($this->basketItemFilters);
+                },
+            ])
+            ->whereHas('tokens', function ($token) {
+                $token->where('name', Jetstream::findRole('customer')->key);
+            })
+            ->get();
     }
 }
