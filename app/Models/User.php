@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Roles\CustomerRole;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -66,5 +67,12 @@ class User extends Authenticatable
     public function baskets(): HasMany
     {
         return $this->hasMany(Basket::class);
+    }
+
+    public function isCustomer(): Builder
+    {
+        return $this->whereHas('tokens', function ($token) {
+                $token->where('name', CustomerRole::key());
+            });
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Roles;
 
+use Laravel\Jetstream\Jetstream;
 use Laravel\Jetstream\Role;
 
 /**
@@ -9,13 +10,11 @@ use Laravel\Jetstream\Role;
  */
 abstract class AbstractRole
 {
-    protected static ?Role $role;
+    abstract public static function key(): string;
 
-    abstract public static function role(): Role;
-
-    public static function key(): string
+    public static function role(): Role
     {
-        return static::role()->key;
+        return Jetstream::findRole(static::key());
     }
 
     public static function permissions(): array

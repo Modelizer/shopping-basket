@@ -2,9 +2,7 @@
 
 namespace Models\Basket\Middlewares;
 
-use App\Models\User;
 use App\Roles\CustomerRole;
-use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Http\Request;
 use Models\Basket\CustomerBasket;
 use Models\Basket\Entities\BasketItem;

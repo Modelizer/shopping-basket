@@ -4,7 +4,6 @@ namespace Models\Basket\Aggregator;
 
 use App\Models\User;
 use Illuminate\Database\Eloquent\Collection;
-use Laravel\Jetstream\Jetstream;
 use Models\Basket\ValueObjects\BasketItemFilterObject;
 
 /**
@@ -26,14 +25,12 @@ class SearchBasketItemsAggregator
         }
 
         return $this->user
+            ->isCustomer()
             ->with([
                 'baskets.items' => function ($item) {
                     $item->where($this->basketItemFilters);
                 },
             ])
-            ->whereHas('tokens', function ($token) {
-                $token->where('name', Jetstream::findRole('customer')->key);
-            })
-            ->get();
+            ->get(['id', 'name']);
     }
 }
