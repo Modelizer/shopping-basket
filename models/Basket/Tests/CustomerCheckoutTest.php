@@ -5,7 +5,7 @@ namespace Models\Basket\Tests;
 use App\Models\Product;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Models\Basket\CustomerBasket;
-use Tests\TestCase;
+use Models\Basket\Tests\TestCase;
 
 /**
  * @author Mohammed Mudassir <hello@mudasir.me>

@@ -6,7 +6,6 @@ use App\Models\Product;
 use App\Models\User;
 use App\Roles\CustomerRole;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Laravel\Jetstream\Jetstream;
 use Models\Basket\CustomerBasket;
 use Models\Basket\Entities\BasketItem;
 use Tests\TestCase;

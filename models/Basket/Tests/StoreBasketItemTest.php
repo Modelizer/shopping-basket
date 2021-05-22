@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature;
+namespace Models\Basket\Tests;
 
 use App\Models\Product;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
